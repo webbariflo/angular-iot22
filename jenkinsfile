@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+    
+    environment {
+    
+    PATH = "C:/Program Files/nodejs"
+}
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('NPM Setup') {
+            steps {   
+                    sh 'npm install'                
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build successful! Artifacts ready for deployment.'
+        }
+        failure {
+            echo 'Build failed. Check logs for details.'
+        }
+    }
+}
